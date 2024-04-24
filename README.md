@@ -5,8 +5,8 @@
 Clone the repository, install packages, start
 
 ```
-git clone https://github.com/ZakharDay/static-site-boilerplate.git
-cd static-site-boilerplate
+git clone https://github.com/ZakharDay/multiplayer-synth-boilerplate.git
+cd multiplayer-synth-boilerplate
 yarn
 yarn start
 ```
