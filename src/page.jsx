@@ -4,18 +4,15 @@ import * as Tone from 'tone'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 
-import {
-  setToneNode,
-  getFrequency,
-  getJcReverbWet
-} from './javascript/store.js'
-
-// import { updateToneNode } from './javascript/tone_node_updater.js'
+import { setToneNode } from './javascript/store.js'
 import Container from './javascript/Container.jsx'
 
-const frequency = getFrequency()
-const jcReverbWet = getJcReverbWet()
-const jcReverbRoom = getJcReverbWet()
+const changableSettings = {
+  frequency: 440,
+  phase: 0,
+  wet: 1,
+  roomSize: 0.5
+}
 
 const synth = new Tone.Synth({
   volume: -20,
@@ -41,15 +38,15 @@ const synth = new Tone.Synth({
 })
 
 const jcReverb = new Tone.JCReverb({
-  wet: 1,
-  roomSize: 0.3
+  wet: changableSettings.wet,
+  roomSize: changableSettings.roomSize
 }).toDestination()
 
 // const chorus = new Tone.Chorus(chorusSettings).start().toDestination()
 
 synth.chain(jcReverb)
 
-synth.triggerAttack('A3', '1n')
+synth.triggerAttack(changableSettings.frequency, '1n')
 
 setToneNode('synth', synth)
 setToneNode('jcReverb', jcReverb)
@@ -58,11 +55,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('reactComponentRoot')
   const root = createRoot(container)
 
-  root.render(
-    <Container
-      frequency={frequency}
-      jcReverbWet={jcReverbWet}
-      jcReverbRoom={jcReverbRoom}
-    />
-  )
+  root.render(<Container settings={changableSettings} />)
 })

@@ -1,51 +1,34 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-import { setFrequency, setJcReverbWet, setJcReverbRoom } from './store.js'
+import { setToneNodeProperty } from './store.js'
 import SC_Slider from './components/SC_Slider.jsx'
 
 export default class Container extends Component {
   constructor(props) {
     super(props)
 
-    const { frequency, jcReverbWet, jcReverbRoom } = this.props
+    this.state = this.props.settings
+  }
 
-    this.state = {
-      frequency,
-      jcReverbWet,
-      jcReverbRoom
+  handleChange = (node, property, value) => {
+    if (typeof property === 'object') {
+      this.setState({
+        [`${property[1]}`]: value
+      })
+
+      setToneNodeProperty(node, property[1], value)
+    } else {
+      this.setState({
+        [`${property}`]: value
+      })
+
+      setToneNodeProperty(node, property, value)
     }
   }
 
-  handleFrequencyChange = (property, value) => {
-    this.setState({
-      frequency: value
-    })
-
-    setFrequency(value)
-    // updateToneNode('', '', value)
-  }
-
-  handleWetChange = (property, value) => {
-    this.setState({
-      jcReverbWet: value
-    })
-
-    setJcReverbWet(value)
-    // updateToneNode('', '', value)
-  }
-
-  handleRoomChange = (property, value) => {
-    this.setState({
-      jcReverbRoom: value
-    })
-
-    setJcReverbRoom(value)
-    // updateToneNode('', '', value)
-  }
-
   render() {
-    const { frequency, jcReverbWet, jcReverbRoom } = this.state
+    const { frequency, phase, jcReverbWet, jcReverbRoom } = this.state
 
     return (
       <div className="Container">
@@ -56,9 +39,21 @@ export default class Container extends Component {
           min={0}
           max={1000}
           step={1}
-          property="none"
+          node="synth"
+          property="frequency"
           value={frequency}
-          handleChange={this.handleFrequencyChange}
+          handleChange={this.handleChange}
+        />
+
+        <SC_Slider
+          name="Oscillator Phase"
+          min={0}
+          max={1000}
+          step={1}
+          node="synth"
+          property={['oscillator', 'phase']}
+          value={phase}
+          handleChange={this.handleChange}
         />
 
         <SC_Slider
@@ -66,19 +61,21 @@ export default class Container extends Component {
           min={0}
           max={1}
           step={0.01}
-          property="none"
+          node="jcReverb"
+          property="wet"
           value={jcReverbWet}
-          handleChange={this.handleWetChange}
+          handleChange={this.handleChange}
         />
 
         <SC_Slider
-          name="JC Reverb Wet"
+          name="JC Reverb Room Size"
           min={0}
           max={1}
           step={0.01}
-          property="none"
+          node="jcReverb"
+          property="roomSize"
           value={jcReverbRoom}
-          handleChange={this.handleRoomChange}
+          handleChange={this.handleChange}
         />
       </div>
     )

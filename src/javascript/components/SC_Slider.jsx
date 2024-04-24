@@ -7,9 +7,9 @@ export default class SC_Slider extends PureComponent {
   }
 
   handleChange = () => {
-    const { property, handleChange } = this.props
+    const { node, property, handleChange } = this.props
     const value = this.input.current.valueAsNumber
-    handleChange(property, value)
+    handleChange(node, property, value)
   }
 
   render() {
