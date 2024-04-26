@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-import { setToneNodeProperty } from './store.js'
-import SC_Slider from './components/SC_Slider.jsx'
+import { startSynthRoom } from './synth.js'
+import { setToneNodeProperty } from '../../javascript/store.js'
+import SC_Slider from '../../javascript/components/SC_Slider.jsx'
+import SC_Button from '../../javascript/components/SC_Button.jsx'
 
 export default class Container extends Component {
   constructor(props) {
     super(props)
 
     this.state = this.props.settings
+    this.state.isStarted = false
   }
 
   handleChange = (node, property, value) => {
@@ -27,7 +30,17 @@ export default class Container extends Component {
     }
   }
 
-  render() {
+  handleStart = () => {
+    const { settings } = this.props
+
+    this.setState({
+      isStarted: true
+    })
+
+    startSynthRoom(settings)
+  }
+
+  renderUI = () => {
     const { frequency, phase, jcReverbWet, jcReverbRoom } = this.state
 
     return (
@@ -77,6 +90,24 @@ export default class Container extends Component {
           value={jcReverbRoom}
           handleChange={this.handleChange}
         />
+      </div>
+    )
+  }
+
+  renderStartButton = () => {
+    return (
+      <SC_Button
+        text="Art Design & Coding Community"
+        handleClick={this.handleStart}
+      />
+    )
+  }
+  render() {
+    const { isStarted } = this.state
+
+    return (
+      <div className="Container">
+        {isStarted ? this.renderUI() : this.renderStartButton()}
       </div>
     )
   }
