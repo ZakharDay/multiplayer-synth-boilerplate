@@ -18,20 +18,20 @@ export default class Container extends Component {
     }
   }
 
-  handleChange = (property, value) => {
-    this.setState({
-      [`${property}`]: value
-    })
-
-    setToneNodeProperty(property, value)
-  }
-
   handleStart = () => {
     this.setState({
       isStarted: true
     })
 
     initToneNodes()
+  }
+
+  handleChange = (property, value) => {
+    this.setState({
+      [`${property}`]: value
+    })
+
+    setToneNodeProperty(property, value)
   }
 
   renderUI = () => {
