@@ -6,6 +6,7 @@ import { initToneNodes, setToneNodeProperty } from './synth_nodes.js'
 import SC_Button from '../../../javascript/components/SC_Button.jsx'
 import SC_Slider from '../../../javascript/components/SC_Slider.jsx'
 import SC_ToggleButtonSet from '../../../javascript/components/SC_ToggleButtonSet.jsx'
+import { sendToFirebase } from '../../../javascript/firebase_io.js'
 
 export default class Container extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class Container extends Component {
     })
 
     setToneNodeProperty(property, value)
+    sendToFirebase(property, value)
   }
 
   renderUI = () => {
